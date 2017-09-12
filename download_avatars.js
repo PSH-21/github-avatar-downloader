@@ -12,7 +12,6 @@ function getRepoContributors(args, cb) {
     }
   };
 
-
   request(options, function (err, response, body) {
       let parsed = JSON.parse(body);
       cb(err, parsed);
@@ -31,8 +30,6 @@ function saveAvatar(err, parsed) {
     }
 }
 
-getRepoContributors(args, saveAvatar);
-
 function downloadImageByURL(url, filePath) {
   request(url)
        .on('error', function (err) {
@@ -41,4 +38,5 @@ function downloadImageByURL(url, filePath) {
        .pipe(fs.createWriteStream(`./${filePath}`));
 }
 
+getRepoContributors(args, saveAvatar);
 
