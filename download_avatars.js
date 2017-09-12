@@ -45,8 +45,18 @@ function avatar(parsed) {
     }
   }
 
-getRepoContributors('jquery', 'jquery', avatar);
+//getRepoContributors('jquery', 'jquery', avatar);
 
+function downloadImageByURL(url, filePath) {
+  request.get(url)
+       .on('error', function (err) {
+         throw err;
+       })
+       .pipe(fs.createWriteStream(`./${filePath}`));
+}
+
+
+downloadImageByURL("https://avatars2.githubusercontent.com/u/2741?v=3&s=466", "avatars/kvirani.jpg")
 // request.(requestURL)
 //        .on('error', function (err) {
 //          throw err;
