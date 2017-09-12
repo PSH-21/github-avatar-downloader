@@ -16,7 +16,6 @@ function getRepoContributors(args, cb) {
 
 
   request(options, function (err, response, body) {
-
       let parsed = JSON.parse(body);
       cb(err, parsed);
 
@@ -24,6 +23,9 @@ function getRepoContributors(args, cb) {
 }
 
 function saveAvatar(err, parsed) {
+    if ( args.length != 2 ){
+      console.log('Error: Please provide a gitOwner name and a Repo Name \n ie. node download_avatars.js <owner> <repo>')
+    }
     for (let i = 0; i < parsed.length; i++) {
         let url = parsed[i]['avatar_url'];
         let filePath = `./avatars/${parsed[i]['login']}.jpg`;
