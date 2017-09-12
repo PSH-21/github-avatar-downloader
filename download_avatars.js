@@ -1,11 +1,12 @@
 require('dotenv').config()
 const request = require('request');
 const fs = require('fs');
+const args = process.argv.slice(2);
 
 var GITHUB_USER = "PSH-21";
 
-function getRepoContributors(repoOwner, repoName, cb) {
-  const requestURL = 'https://'+ GITHUB_USER + ':' + process.env.GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/' + 'contributors'
+function getRepoContributors(args, cb) {
+  const requestURL = 'https://'+ GITHUB_USER + ':' + process.env.GITHUB_TOKEN + '@api.github.com/repos/' + args[0] + '/' + args[1] + '/' + 'contributors'
   const options = {
     url: requestURL,
     headers : {
@@ -30,7 +31,7 @@ function saveAvatar(err, parsed) {
     }
 }
 
-getRepoContributors('jquery', 'jquery', saveAvatar);
+getRepoContributors(args, saveAvatar);
 
 function downloadImageByURL(url, filePath) {
   request(url)
