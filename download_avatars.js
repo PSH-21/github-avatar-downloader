@@ -3,10 +3,8 @@ const request = require('request');
 const fs = require('fs');
 const args = process.argv.slice(2);
 
-var GITHUB_USER = "PSH-21";
-
 function getRepoContributors(args, cb) {
-  const requestURL = 'https://'+ GITHUB_USER + ':' + process.env.GITHUB_TOKEN + '@api.github.com/repos/' + args[0] + '/' + args[1] + '/' + 'contributors'
+  const requestURL = 'https://'+ process.env.GITHUB_USER + ':' + process.env.GITHUB_TOKEN + '@api.github.com/repos/' + args[0] + '/' + args[1] + '/' + 'contributors'
   const options = {
     url: requestURL,
     headers : {
@@ -42,9 +40,5 @@ function downloadImageByURL(url, filePath) {
        })
        .pipe(fs.createWriteStream(`./${filePath}`));
 }
-
-
-//downloadImageByURL("https://avatars2.githubusercontent.com/u/2741?v=3&s=466", "avatars/kvirani.jpg")
-
 
 
