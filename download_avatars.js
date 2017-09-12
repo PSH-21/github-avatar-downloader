@@ -3,29 +3,10 @@ const request = require('request');
 const fs = require('fs');
 
 var GITHUB_USER = "PSH-21";
-//var repoOwner = 'jquery';
-//var repoName = 'jquery';
-
-
-// function getOptionsForRepoList(username, accessToken) {
-//   return {
-//     url: `https://api.github.com/users/${username}/repos`,
-//     qs: {
-//       sort: 'pushed',
-//       access_token: accessToken
-//     },
-//     headers: {
-//       'User-Agent': 'macaroon'
-//     }
-//   };
-// }
-
-// const options = getOptionsForRepoList(process.argv[2], process.env.GITHUB_ACCESS_TOKEN);
-
 
 function getRepoContributors(repoOwner, repoName, cb) {
-  var requestURL = 'https://'+ GITHUB_USER + ':' + process.env.GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/' + 'contributors'
-  var options = {
+  const requestURL = 'https://'+ GITHUB_USER + ':' + process.env.GITHUB_TOKEN + '@api.github.com/repos/' + repoOwner + '/' + repoName + '/' + 'contributors'
+  const options = {
     url: requestURL,
     headers : {
       'User-Agent': 'request'
@@ -34,21 +15,25 @@ function getRepoContributors(repoOwner, repoName, cb) {
 
 
   request(options, function (err, response, body) {
-      var parsed = JSON.parse(body);
-      avatar(parsed);
+
+      let parsed = JSON.parse(body);
+      cb(err, parsed);
+
     });
 }
 
-function avatar(parsed) {
-    for (var i = 0; i < parsed.length; i++) {
-        console.log(parsed[i]['avatar_url']);
+function saveAvatar(err, parsed) {
+    for (let i = 0; i < parsed.length; i++) {
+        let url = parsed[i]['avatar_url'];
+        let filePath = `./avatars/${parsed[i]['login']}.jpg`;
+        downloadImageByURL(url, filePath);
     }
-  }
+}
 
-//getRepoContributors('jquery', 'jquery', avatar);
+getRepoContributors('jquery', 'jquery', saveAvatar);
 
 function downloadImageByURL(url, filePath) {
-  request.get(url)
+  request(url)
        .on('error', function (err) {
          throw err;
        })
@@ -56,20 +41,7 @@ function downloadImageByURL(url, filePath) {
 }
 
 
-downloadImageByURL("https://avatars2.githubusercontent.com/u/2741?v=3&s=466", "avatars/kvirani.jpg")
-// request.(requestURL)
-//        .on('error', function (err) {
-//          throw err;
-//        })
-//        .on('response', function (response) {
-//          console.log(response);
-//        });
+//downloadImageByURL("https://avatars2.githubusercontent.com/u/2741?v=3&s=466", "avatars/kvirani.jpg")
 
-
-// Example hardcoded
-// getRepoContributors("jquery", "jquery", function(err, result) {
-//   console.log("Errors:", err);
-//   console.log("Result:", result);
-// });
 
 
